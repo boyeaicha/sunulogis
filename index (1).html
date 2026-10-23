@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sunulogis – Logements étudiants à Saint-Louis</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo" onclick="goHome()">
+      <span>SUNU</span>Logis
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="#" onclick="goHome()">Accueil</a>
+      <a href="#" onclick="goToCategory('')">Toutes les offres</a>
+      <a href="#" onclick="goHome(); document.getElementById('comment-ca-marche').scrollIntoView({behavior:'smooth'})">Comment ça marche</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="favsBtn" title="Mes favoris">
+        ❤ <span id="favsCount">0</span>
+      </button>
+      <button class="btn-primary" onclick="showToast('Fonctionnalité à venir !')">Publier une offre</button>
+      <button class="burger" id="burgerBtn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     PAGE ACCUEIL (E-COMMERCE)
+============================================================ -->
+<div id="homePage">
+
+  <!-- HERO COMPACT -->
+  <section class="home-hero">
+    <div class="home-hero-content">
+      <h1>Le bon logement,<br>au bon prix, <em>près de l'UGB</em>.</h1>
+      <p>Parcoure les quartiers de Saint-Louis et trouve l'offre qui te correspond.</p>
+      <div class="search-bar">
+        <input type="text" id="heroSearch" placeholder="Rechercher un quartier, un type de logement…" aria-label="Recherche"/>
+        <button onclick="searchFromHome()">🔍 Rechercher</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANDEAU CONFIANCE -->
+  <section class="trust-bar">
+    <div class="trust-item"><strong>20+</strong><span>Offres actives</span></div>
+    <div class="trust-item"><strong>5</strong><span>Quartiers</span></div>
+    <div class="trust-item"><strong>100%</strong><span>Vérifiées</span></div>
+    <div class="trust-item"><strong>0 F</strong><span>Frais d'agence</span></div>
+  </section>
+
+  <!-- CATÉGORIES PAR TYPE -->
+  <section class="cat-section">
+    <div class="section-head">
+      <h2>Parcourir par type de logement</h2>
+      <p>Choisis la formule qui correspond à ton mode de vie</p>
+    </div>
+    <div class="cat-grid" id="typeGrid"></div>
+  </section>
+
+  <!-- CATÉGORIES PAR QUARTIER -->
+  <section class="cat-section alt-bg">
+    <div class="section-head">
+      <h2>Parcourir par quartier</h2>
+      <p>Trouve le coin de Saint-Louis qui te convient</p>
+    </div>
+    <div class="cat-grid quartier-grid" id="quartierGrid"></div>
+  </section>
+
+  <!-- OFFRES EN VEDETTE -->
+  <section class="cat-section">
+    <div class="section-head">
+      <h2>Offres populaires cette semaine</h2>
+      <p>Sélection des logements les plus consultés</p>
+    </div>
+    <div class="listings-grid" id="featuredGrid"></div>
+    <div class="see-all-wrap">
+      <button class="btn-outline" onclick="goToCategory('')">Voir toutes les offres →</button>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  </section>
+         <section class="how-section" id="comment-ca-marche"> 
+            <div class="section-head">
+                  <h2>Comment ça marche</h2>
+                  <p>Trois étapes simples pour trouver ton logement</p>
+            </div>
+            <div class="steps-grid">
+                  <div class="step">
+                        <div class="step-num">1</div>
+                        <h3>Recherche</h3>
+                        <p>Filtre par quartier, prix, type ou équipements selon tes besoins.</p>
+                  </div>
+                  <div class="step">
+                        <div class="step-num">2</div>
+                        <h3>Compare</h3>
+                        <p>Consulte les photos, prix et distances pour faire ton choix.</p>
+                  </div>
+                  <div class="step">
+                        <div class="step-num">3</div>
+                        <h3>Contacte</h3>
+                        <p>Échange directement avec le propriétaire pour visiter et réserver.</p>
+                  </div>
+            </div>
+         </section>
+
+</div>
+
+<!-- ============================================================
+     PAGE LISTING (FILTRES + RÉSULTATS)
+============================================================ -->
+<div id="listingPage" style="display:none;">
+
+  <div class="listing-topbar">
+    <button class="back-btn" onclick="goHome()">← Retour à l'accueil</button>
+    <h1 id="listingTitle">Toutes les offres</h1>
+  </div>
+
+  <div class="filter-backdrop" id="backdrop" onclick="closeFilters()"></div>
+
+  <main class="main-layout">
+
+    <aside class="filters-panel" id="filtersPanel">
+      <h2>🎛 Filtres</h2>
+
+      <div class="filter-group">
+        <label for="fType">Type de logement</label>
+        <select id="fType">
+          <option value="">Tous les types</option>
+          <option value="Chambre">Chambre individuelle</option>
+          <option value="Studio">Studio</option>
+          <option value="Appartement">Appartement</option>
+          <option value="Colocation">Colocation</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="fQuartier">Quartier</label>
+        <select id="fQuartier">
+          <option value="">Tous les quartiers</option>
+          <option value="Sor">Sor</option>
+          <option value="Guet Ndar">Guet Ndar</option>
+          <option value="Sanar wolof">Sanar wolof</option>
+          <option value="Sanar peulh">Sanar peulh</option>
+          <option value="Bango">Bango</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="fPrix">Prix max : <strong id="prixLabel">150 000</strong> F CFA/mois</label>
+        <input type="range" id="fPrix" min="20000" max="150000" step="5000" value="150000"
+               oninput="document.getElementById('prixLabel').textContent = Number(this.value).toLocaleString('fr-FR')"/>
+        <div class="range-output">
+          <span>20 000 F</span>
+          <span>150 000 F</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label for="fDistance">Distance max campus (km)</label>
+        <select id="fDistance">
+          <option value="">Toutes distances</option>
+          <option value="1">≤ 1 km</option>
+          <option value="2">≤ 2 km</option>
+          <option value="5">≤ 5 km</option>
+          <option value="10">≤ 10 km</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="fDispo">Disponibilité</label>
+        <select id="fDispo">
+          <option value="">Toutes</option>
+          <option value="Disponible">Disponible</option>
+          <option value="Indisponible">Indisponible</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Équipements</label>
+        <div class="amenity-list">
+          <label><input type="checkbox" class="amenityCheck" value="WiFi"> 📶 WiFi</label>
+          <label><input type="checkbox" class="amenityCheck" value="Cuisine"> 🍳 Cuisine équipée</label>
+          <label><input type="checkbox" class="amenityCheck" value="Climatisation"> ❄️ Climatisation</label>
+          <label><input type="checkbox" class="amenityCheck" value="Eau courante"> 🚰 Eau courante</label>
+          <label><input type="checkbox" class="amenityCheck" value="Électricité"> 💡 Électricité incluse</label>
+          <label><input type="checkbox" class="amenityCheck" value="Sécurisé"> 🔒 Résidence sécurisée</label>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-apply" onclick="applyFilters()">Appliquer</button>
+        <button class="btn-reset" onclick="resetFilters()">Réinitialiser</button>
+      </div>
+    </aside>
+
+    <section>
+      <div class="results-header">
+        <p class="results-count"><strong id="resultCount">0</strong> logement(s) trouvé(s)</p>
+        <div class="sort-bar">
+          <span>Trier :</span>
+          <select id="sortSelect" onchange="applyFilters()">
+            <option value="default">Pertinence</option>
+            <option value="prix-asc">Prix ↑</option>
+            <option value="prix-desc">Prix ↓</option>
+            <option value="distance">Distance</option>
+            <option value="nom">Nom A–Z</option>
+          </select>
+          <div class="view-toggle">
+            <button class="view-btn active" id="gridBtn" onclick="setView('grid')" title="Grille">⊞</button>
+            <button class="view-btn" id="listBtn" onclick="setView('list')" title="Liste">☰</button>
+          </div>
+          <button class="btn-ghost burger-filter" id="burgerFilterBtn">☰ Filtres</button>
+        </div>
+      </div>
+      <div class="listings-grid" id="listingsGrid"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============================================================
+     MODAL DÉTAIL
+============================================================ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-img-gallery" id="modalGallery"></div>
+    <div class="modal-body">
+      <div class="modal-grid" id="modalGrid"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-amenities" id="modalAmenities"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-reset" onclick="closeModal()">Fermer</button>
+      <button class="btn-apply" onclick="showToast('Message envoyé au propriétaire !')">Contacter le propriétaire</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Sunulogis</strong> · Projet Développement Web I · L3 INFO</p>
+  <p>Université Gaston Berger de Saint-Louis · Données fictives à des fins pédagogiques</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
